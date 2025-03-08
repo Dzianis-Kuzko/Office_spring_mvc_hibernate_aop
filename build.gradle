@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'war'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+group 'com.kuz.spring.mvc'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+ext {
+    hibernate = '6.3.1.Final'
+    junitVersion = '5.10.0'
+    flywaydb = '11.3.4'
+    springframework = '6.2.3'
+    postgresqlVersion = '42.7.4'
+    c3p0 = '0.10.1'
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+
+
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
+    implementation "org.hibernate:hibernate-core:${hibernate}"
+    implementation "org.flywaydb:flyway-core:${flywaydb}"
+    implementation "org.springframework:spring-webmvc:${springframework}"
+    implementation "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation "com.mchange:c3p0:${c3p0}"
+    implementation "org.springframework:spring-orm:${springframework}"
+
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+war {
+    from 'src/main/webapp'
+    archiveFileName = "template-0.0.1.war"
+}
+
+task copyWar(type: Copy) {
+    from("$buildDir/libs/template-0.0.1.war")
+    into("d:/INSTALL/tomcat/apache-tomcat-10.1.7-windows-x64/apache-tomcat-10.1.7/webapps")
+}
