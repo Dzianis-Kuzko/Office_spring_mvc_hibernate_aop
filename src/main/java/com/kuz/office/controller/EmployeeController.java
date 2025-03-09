@@ -19,7 +19,6 @@ public class EmployeeController {
     @RequestMapping("/")
     public String showAllEmployees(Model model) {
         List<Employee> allEmployees = employeeService.getAllEmployees();
-        System.out.println(allEmployees);
         model.addAttribute("allEmps", allEmployees);
         return "all-employees";
     }
@@ -45,5 +44,11 @@ public class EmployeeController {
 
         return "employee-info";
 
+    }
+
+    @RequestMapping("/deleteEmployee")
+    public String deleteEmployee(@RequestParam("empId") int id) {
+        employeeService.deleteEmployee(id);
+        return "redirect:/";
     }
 }
